@@ -16,7 +16,7 @@ else
 sleep 10		# just to give me time to kill it in case it goes haywire, could shorten to 1. 
     
     # Check vpn-tunnel "eth1" and ping cz.nic if internet connection work
-    if  [ "$(ping -c 1 -W 1 googgle.co.id | grep '100% packet loss' )" != "" ]; then
+    if  [ "$(ping -c 1 -W 1 google.co.id | grep '100% packet loss' )" != "" ]; then
             echo "Openclash "eth1" has got no internet connection -> restart it"
             logger -t Openclash "eth1" has got no internet connection -> restart it
             /etc/init.d/openclash restart
