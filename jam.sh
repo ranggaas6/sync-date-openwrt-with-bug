@@ -53,6 +53,21 @@ function nyetart() {
 	fi
 }
 
+function ngewan() {
+    ping -c 1 -w 1 192.168.8.1 > /dev/null
+    if [ $? -ne 0 ]; then
+    echo "Ping didn't exit cleanly"
+	ifdown wan
+	echo "ifdown fired"
+	sleep 10	# I have no idea if this is needed. 
+	ifup wan
+	echo "ifup fired"
+	sleep 10	# again, give it a moment to come back up and settle
+    else
+	echo "ping was OK"
+    fi
+}
+
 function ngecurl() {
 	curl -si "$cv_type" | grep Date > "$dtdir"
 	echo -e "${nmfl}: Executed $cv_type as time server."
@@ -159,7 +174,7 @@ function ngepink() {
 			echo -e "${nmfl}: Connection to ${cv_type} is unavailable, pinging again..."
 			logger "${nmfl}: Connection to ${cv_type} is unavailable, pinging again..."
 			sleep 3
-			ngepink
+			ngewan
 		fi
 	fi
 }
@@ -172,12 +187,12 @@ if [[ ! -z "$cv_type" ]]; then
 	# Runner
 	if [[ "$2" == "cron" ]]; then
 		ngepink
+		ngecurl
+		sandal
 	else
-		nyetop
 		ngepink
 		ngecurl
 		sandal
-		nyetart
 	fi
 
 	# Cleaning files
