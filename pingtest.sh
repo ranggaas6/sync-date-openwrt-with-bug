@@ -1,9 +1,10 @@
 #!/bin/sh
 # This should ping the cable modem and if it's not reachable, bounce the wan interface
-CHECKIP=104.16.51.111
+for i in 104.16.51.111 104.16.53.111 104.16.143.190
+do
 
 function ngewan() {
-    ping -c 1 -w 1 $CHECKIP > /dev/null
+    ping -c 1 -w 1 192.168.8.1 > /dev/null
     if [ $? -ne 0 ]; then
     echo "Ping didn't exit cleanly"
 	ifdown wan
@@ -18,8 +19,7 @@ function ngewan() {
 }
 
 function ngeclash() {
-    ping -c 1 -w 1 $CHECKIP > /dev/null
-    if  [ "$(ping -c 1 -W 1 $CHECKIP | grep '100% packet loss' )" != "" ]; then
+    if  [ "$(ping -c 3 -W 1 $i | grep '100% packet loss' )" != "" ]; then
 	    echo "Openclash "eth1" has got no internet connection -> restart it"
             logger -t Openclash "eth1" has got no internet connection -> restart it
             /etc/init.d/openclash restart
@@ -39,3 +39,4 @@ function ngeclash() {
 		ngewan
 		ngeclash
 	fi
+	done
