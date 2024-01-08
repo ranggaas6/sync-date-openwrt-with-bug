@@ -18,6 +18,13 @@ function ngewan() {
     fi
 }
 
+function nyetart() {
+	startvpn="${nmfl}: Restarting"
+	echo -e "${startvpn} VPN tunnels if available."
+	logger "${startvpn} VPN tunnels if available."
+	if [[ -f "$initd"/openclash ]] && [[ $(uci -q get openclash.config.enable) == "1" ]]; then "$initd"/openclash restart && echo -e "${startvpn} OpenClash"; fi
+}
+
 function ngeclash() {
     if  [ "$(ping -c 3 -W 1 $i | grep '100% packet loss' )" != "" ]; then
 	    echo "Openclash "eth1" has got no internet connection -> restart it"
