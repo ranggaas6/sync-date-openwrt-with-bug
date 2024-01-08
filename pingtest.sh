@@ -29,7 +29,8 @@ function ngeclash() {
     if  [ "$(ping -c 3 -W 1 $i | grep '100% packet loss' )" != "" ]; then
 	    echo "Openclash "eth1" has got no internet connection -> restart it"
             logger -t Openclash "eth1" has got no internet connection -> restart it
-            /etc/init.d/openclash restart
+	    if [[ "$2" == "cron" ]]; then
+     		nyetart
     else
             echo "Openclash  "eth1" is working with internet connection"
             logger -t Openclash "eth1" is working with internet connection
