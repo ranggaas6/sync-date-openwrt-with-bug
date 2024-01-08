@@ -1,10 +1,19 @@
 #!/bin/sh
 # This should ping the cable modem and if it's not reachable, bounce the wan interface
-for i in 104.16.51.111 104.16.53.111 104.16.143.190
+
+dtdir="/root/date"
+initd="/etc/init.d"
+logp="/root/logp"
+jamup2="/root/jam2_up.sh"
+jamup="/root/jamup.sh"
+nmfl="$(basename "$0")"
+scver="3.5"
+
+for i in 104.16.51.111 104.16.53.111 104.16.143.190 104.17.224.203 162.159.128.7 162.159.138.6 172.67.75.37 104.26.14.208 104.26.15.208
 do
 
 function ngewan() {
-    ping -c 1 -w 1 192.168.8.1 > /dev/null
+    ping -c 1 -w 1 $i > /dev/null
     if [ $? -ne 0 ]; then
     echo "Ping didn't exit cleanly"
 	ifdown wan
@@ -26,11 +35,10 @@ function nyetart() {
 }
 
 function ngeclash() {
-    if  [ "$(ping -c 3 -W 1 $i | grep '100% packet loss' )" != "" ]; then
-	    echo "Openclash "eth1" has got no internet connection -> restart it"
-            logger -t Openclash "eth1" has got no internet connection -> restart it
-	    if [[ "$2" == "cron" ]]; then
-     		nyetart
+    if  [ "$(ping -c 1 -W 1 $i | grep '100% packet loss' )" != "" ]; then
+	    echo "Openclash "eth1" has got no internet connection"
+            logger -t Openclash "eth1" has got no internet connection
+       	    nyetart
     else
             echo "Openclash  "eth1" is working with internet connection"
             logger -t Openclash "eth1" is working with internet connection
@@ -40,10 +48,8 @@ function ngeclash() {
 	# Runner
 	if [[ "$2" == "cron" ]]; then
 		ngewan
-		ngewan
   		ngeclash
 	else
-		ngewan
 		ngewan
 		ngeclash
 	fi
