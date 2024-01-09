@@ -1,5 +1,35 @@
 #!/bin/bash
 
+dtdir="/root/date"
+initd="/etc/init.d"
+logp="/root/logp"
+jamup2="/root/jam2_up.sh"
+jamup="/root/jamup.sh"
+nmfl="$(basename "$0")"
+scver="3.5"
+
+function ngewan() {
+    ping -c 1 -w 1 $i > /dev/null
+    if [ $? -ne 0 ]; then
+    echo "Ping didn't exit cleanly"
+	ifdown wan
+	echo "ifdown fired"
+	sleep 10	# I have no idea if this is needed. 
+	ifup wan
+	echo "ifup fired"
+	sleep 10	# again, give it a moment to come back up and settle
+    else
+	echo "ping was OK"
+    fi
+}
+
+function nyetart() {
+	startvpn="${nmfl}: Restarting"
+	echo -e "${startvpn} VPN tunnels if available."
+	logger "${startvpn} VPN tunnels if available."
+	if [[ -f "$initd"/openclash ]] && [[ $(uci -q get openclash.config.enable) == "1" ]]; then "$initd"/openclash restart && echo -e "${startvpn} OpenClash"; fi
+}
+
 function ngeping() {
 for k in 104.21.8.110 ; do
 for j in 104.21.8.129 ; do
@@ -83,7 +113,9 @@ done
 
 	# Runner
 	if [[ "$2" == "cron" ]]; then
+		ngewan
 		ngeping
 	else
+	    	ngewan
 		ngeping
 	fi
