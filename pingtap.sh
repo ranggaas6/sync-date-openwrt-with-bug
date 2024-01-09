@@ -9,17 +9,17 @@ nmfl="$(basename "$0")"
 scver="3.5"
 
 function ngewan() {
-    ping -c 1 -w 1 $i > /dev/null
+    ping -c 1 -w 1 192.168.8.1 > /dev/null
     if [ $? -ne 0 ]; then
-    echo "Ping didn't exit cleanly"
+    echo "MODEM TIDAK BISA MENDAPATKAN PING"
 	ifdown wan
-	echo "ifdown fired"
+	echo "MEMATIKAN MODEM"
 	sleep 10	# I have no idea if this is needed. 
 	ifup wan
-	echo "ifup fired"
+	echo "MENGHIDUPKAN MODEM"
 	sleep 10	# again, give it a moment to come back up and settle
     else
-	echo "ping was OK"
+	echo "MODEM BERHASIL MELAKUKAN PING"
     fi
 }
 
