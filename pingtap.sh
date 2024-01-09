@@ -11,7 +11,12 @@ for e in 172.67.139.114 ; do
 for d in 104.21.8.123 ; do
 for c in 172.67.139.112 ; do
 for b in 172.67.139.111 ; do
+for a in 172.67.139.011 ; do
         
+        if  ping -q -c 5 -W 1 $a ; then
+             echo "$a is up"
+        else
+             echo "$a is down"
         if  ping -q -c 5 -W 1 $b ; then
              echo "$b is up"
         else
@@ -62,6 +67,8 @@ fi
 fi
 fi
 fi
+fi
+done
 done
 done
 done
