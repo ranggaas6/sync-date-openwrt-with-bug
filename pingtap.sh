@@ -1,6 +1,7 @@
 #!/bin/bash
 
-
+function ngeping() {
+for k in 104.21.8.110 ; do
 for j in 104.21.8.129 ; do
 for i in 172.67.139.118 ; do
 for h in 172.67.139.117 ; do
@@ -47,6 +48,11 @@ for b in 172.67.139.111 ; do
              echo "$j is up"
         else
              echo "$j is down"
+        if ping -q -c 5 -W 1 $k ; then
+             echo "$k is up"
+        else
+             echo "$k is down"
+fi
 fi
 fi
 fi
@@ -65,3 +71,12 @@ done
 done
 done
 done
+done
+}
+
+	# Runner
+	if [[ "$2" == "cron" ]]; then
+		ngeping
+	else
+		ngeping
+	fi
