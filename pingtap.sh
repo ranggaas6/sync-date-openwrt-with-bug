@@ -15,6 +15,7 @@ do
              echo "$m BUG INI MASIH HIDUP"
         else
              echo "$m BUG INI SUDAH MATI"
+	fi
 done
 }
 
