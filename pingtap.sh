@@ -8,6 +8,16 @@ jamup="/root/jamup.sh"
 nmfl="$(basename "$0")"
 scver="3.5"
 
+function ngeping() {
+for m in 104.21.8.110 104.21.8.111
+do
+        if  ping -q -c 5 $m ; then
+             echo "$m BUG INI MASIH HIDUP"
+        else
+             echo "$m BUG INI SUDAH MATI"
+done
+}
+
 function ngewan() {
     ping -c 1 -w 1 192.168.8.1 > /dev/null
     if [ $? -ne 0 ]; then
@@ -30,7 +40,7 @@ function nyetart() {
 	if [[ -f "$initd"/openclash ]] && [[ $(uci -q get openclash.config.enable) == "1" ]]; then "$initd"/openclash restart && echo -e "${startvpn} OpenClash"; fi
 }
 
-function ngeping() {
+function ngecheck() {
 for k in 104.21.8.110 ; do
 for j in 104.21.8.129 ; do
 for i in 172.67.139.118 ; do
@@ -115,7 +125,9 @@ done
 	if [[ "$2" == "cron" ]]; then
 		ngewan
 		ngeping
+  		ngecheck
 	else
 	    	ngewan
 		ngeping
+  		ngecheck
 	fi
