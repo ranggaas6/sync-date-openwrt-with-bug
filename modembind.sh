@@ -9,15 +9,12 @@ jamup="/root/jamup.sh"
 nmfl="$(basename "$0")"
 scver="3.5"
 
-for i in https://google.com
-do
-
 function usbmodem() {
-    httping -l -g $i -c 1 >/dev/null
+    httping -l -g $cv_type -c 1 >/dev/null
     if [ $? -eq 0 ]
       then 
         echo "MODEM BERHASIL MELAKUKAN PING"
-        exit 0
+        exit 1
       else
         echo "MODEM TIDAK BISA MENDAPATKAN PING"
         ngefly
@@ -161,5 +158,3 @@ else
 	echo -e "${nmfl}: Missing URL/Bug/Domain!. Read https://github.com/vitoharhari/sync-date-openwrt-with-bug/blob/main/README.md for details."
 	logger "${nmfl}: Missing URL/Bug/Domain!. Read https://github.com/vitoharhari/sync-date-openwrt-with-bug/blob/main/README.md for details."
 fi
-
-done
